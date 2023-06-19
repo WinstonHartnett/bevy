@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"derive":["AppLabel","DynamicPlugin"],"enum":["CoreStage","RunMode","StartupStage"],"mod":["prelude"],"struct":["App","AppExit","AppLabelId","AppTypeRegistry","PluginGroupBuilder","ScheduleRunnerPlugin","ScheduleRunnerSettings","StartupSchedule"],"trait":["AppLabel","Plugin","PluginGroup"],"type":["CreatePlugin"]};

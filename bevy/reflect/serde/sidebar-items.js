@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Serializable"],"struct":["ArraySerializer","EnumSerializer","ListSerializer","MapSerializer","ReflectSerializer","ReflectValueSerializer","SerializationData","StructSerializer","TupleSerializer","TupleStructSerializer","TypedReflectDeserializer","TypedReflectSerializer","UntypedReflectDeserializer"],"trait":["DeserializeValue"]};

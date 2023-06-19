@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["animation","app","asset","audio","core","core_pipeline","diagnostic","dynamic_plugin","ecs","gilrs","gltf","hierarchy","input","log","math","pbr","prelude","ptr","reflect","render","scene","sprite","tasks","text","time","transform","ui","utils","window","winit"],"struct":["DefaultPlugins","MinimalPlugins"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["PowerPreference","WgpuSettingsPriority"],"fn":["settings_priority_from_env"],"struct":["Backends","WgpuFeatures","WgpuLimits","WgpuSettings"]};

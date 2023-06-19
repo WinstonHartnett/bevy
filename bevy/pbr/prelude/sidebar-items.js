@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AlphaMode"],"struct":["AmbientLight","DirectionalLight","DirectionalLightBundle","MaterialMeshBundle","MaterialPlugin","PointLight","PointLightBundle","SpotLight","SpotLightBundle","StandardMaterial"],"trait":["Material"],"type":["PbrBundle"]};

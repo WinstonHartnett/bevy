@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ComponentUniforms","DynamicUniformIndex","ExtractComponentPlugin","UniformComponentPlugin"],"trait":["ExtractComponent"]};

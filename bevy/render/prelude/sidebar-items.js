@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Color","Projection","Visibility"],"struct":["Camera","ComputedVisibility","Image","ImagePlugin","Mesh","Msaa","OrthographicProjection","PerspectiveProjection","Shader","SpatialBundle","VisibilityBundle"]};

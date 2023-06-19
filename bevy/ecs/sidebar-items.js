@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["all_tuples"],"mod":["archetype","bundle","change_detection","component","entity","event","prelude","ptr","query","reflect","schedule","storage","system","world"]};

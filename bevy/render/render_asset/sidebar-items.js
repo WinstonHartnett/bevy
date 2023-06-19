@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["PrepareAssetError","PrepareAssetLabel"],"struct":["ExtractedAssets","PrepareNextFrameAssets","RenderAssetPlugin","RenderAssets"],"trait":["RenderAsset"]};

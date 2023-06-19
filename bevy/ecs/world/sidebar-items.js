@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["EntityMut","EntityRef","Mut","SpawnBatchIter","World","WorldBorrow","WorldBorrowMut","WorldCell","WorldId"],"trait":["FromWorld"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["TimeUpdateStrategy","TimerMode"],"fn":["create_time_channels"],"mod":["prelude"],"struct":["FixedTimestep","FixedTimestepState","FixedTimesteps","Stopwatch","Time","TimePlugin","TimeReceiver","TimeSender","TimeSystem","Timer"]};

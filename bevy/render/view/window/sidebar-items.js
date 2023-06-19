@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["WindowSystem"],"fn":["prepare_windows"],"struct":["ExtractedWindow","ExtractedWindows","NonSendMarker","WindowRenderPlugin","WindowSurfaces"]};

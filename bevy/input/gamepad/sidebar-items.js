@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AxisSettingsError","ButtonSettingsError","GamepadAxisType","GamepadButtonType","GamepadEventType"],"fn":["gamepad_connection_system","gamepad_event_system"],"struct":["AxisSettings","ButtonAxisSettings","ButtonSettings","Gamepad","GamepadAxis","GamepadButton","GamepadEvent","GamepadEventRaw","GamepadInfo","GamepadSettings","Gamepads"]};

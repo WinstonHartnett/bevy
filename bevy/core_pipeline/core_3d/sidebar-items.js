@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Camera3dDepthLoadOp"],"fn":["extract_core_3d_camera_phases","prepare_core_3d_depth_textures"],"mod":["graph"],"struct":["AlphaMask3d","Camera3d","Camera3dBundle","Core3dPlugin","MainPass3dNode","Opaque3d","Transparent3d"]};

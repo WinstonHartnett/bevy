@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["HorizontalAlign","TextError","VerticalAlign"],"struct":["Font","Text","Text2dBundle","TextAlignment","TextSection","TextStyle"]};
