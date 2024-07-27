@@ -154,6 +154,8 @@ where
 
     fn update_archetype_component_access(&mut self, _world: UnsafeWorldCell) {}
 
+    unsafe fn new_archetype(&mut self, _archetype: &crate::archetype::Archetype) {}
+
     #[inline]
     fn check_change_tick(&mut self, change_tick: Tick) {
         check_system_change_tick(

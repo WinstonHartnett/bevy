@@ -225,6 +225,16 @@ where
             .extend(self.b.archetype_component_access());
     }
 
+    unsafe fn new_archetype(&mut self, archetype: &crate::archetype::Archetype) {
+        self.a.new_archetype(archetype);
+        self.b.new_archetype(archetype);
+
+        self.archetype_component_access
+            .extend(self.a.archetype_component_access());
+        self.archetype_component_access
+            .extend(self.b.archetype_component_access());
+    }
+
     fn check_change_tick(&mut self, change_tick: Tick) {
         self.a.check_change_tick(change_tick);
         self.b.check_change_tick(change_tick);

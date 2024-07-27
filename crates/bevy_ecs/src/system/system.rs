@@ -1,6 +1,7 @@
 use bevy_utils::tracing::warn;
 use core::fmt::Debug;
 
+use crate::archetype::Archetype;
 use crate::component::Tick;
 use crate::schedule::InternedSystemSet;
 use crate::world::unsafe_world_cell::UnsafeWorldCell;
@@ -103,6 +104,13 @@ pub trait System: Send + Sync + 'static {
     /// `world` may only be used to access metadata. This can be done in safe code
     /// via functions such as [`UnsafeWorldCell::archetypes`].
     fn update_archetype_component_access(&mut self, world: UnsafeWorldCell);
+
+    /// TODO
+    ///
+    /// # Safety
+    ///
+    /// `archetype` must be from the [`World`] used to initialize `state` in `init_state`.
+    unsafe fn new_archetype(&mut self, archetype: &Archetype);
 
     /// Checks any [`Tick`]s stored on this system and wraps their value if they get too old.
     ///

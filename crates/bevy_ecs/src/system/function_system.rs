@@ -598,6 +598,11 @@ where
         }
     }
 
+    unsafe fn new_archetype(&mut self, archetype: &crate::archetype::Archetype) {
+        let param_state = self.param_state.as_mut().unwrap();
+        unsafe { F::Param::new_archetype(param_state, archetype, &mut self.system_meta) };
+    }
+
     #[inline]
     fn check_change_tick(&mut self, change_tick: Tick) {
         check_system_change_tick(

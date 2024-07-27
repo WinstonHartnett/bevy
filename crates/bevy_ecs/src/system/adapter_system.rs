@@ -141,6 +141,11 @@ where
         self.system.update_archetype_component_access(world);
     }
 
+    #[inline]
+    unsafe fn new_archetype(&mut self, archetype: &crate::archetype::Archetype) {
+        self.system.new_archetype(archetype);
+    }
+
     fn check_change_tick(&mut self, change_tick: crate::component::Tick) {
         self.system.check_change_tick(change_tick);
     }
