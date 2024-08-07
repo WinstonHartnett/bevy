@@ -6,7 +6,7 @@ use crate::{
     archetype::ArchetypeComponentId,
     component::{ComponentId, Tick},
     prelude::World,
-    query::Access,
+    query::{Access, FilteredAccessSet},
     schedule::InternedSystemSet,
     world::unsafe_world_cell::UnsafeWorldCell,
 };
@@ -114,7 +114,7 @@ pub struct CombinatorSystem<Func, A, B> {
     a: A,
     b: B,
     name: Cow<'static, str>,
-    component_access: Access<ComponentId>,
+    component_access_set: FilteredAccessSet<ComponentId>,
     archetype_component_access: Access<ArchetypeComponentId>,
 }
 
@@ -128,7 +128,7 @@ impl<Func, A, B> CombinatorSystem<Func, A, B> {
             a,
             b,
             name,
-            component_access: Access::new(),
+            component_access_set: FilteredAccessSet::new(),
             archetype_component_access: Access::new(),
         }
     }
@@ -147,8 +147,8 @@ where
         self.name.clone()
     }
 
-    fn component_access(&self) -> &Access<ComponentId> {
-        &self.component_access
+    fn component_access_set(&self) -> &FilteredAccessSet<ComponentId> {
+        &self.component_access_set
     }
 
     fn archetype_component_access(&self) -> &Access<ArchetypeComponentId> {
@@ -211,8 +211,10 @@ where
     fn initialize(&mut self, world: &mut World) {
         self.a.initialize(world);
         self.b.initialize(world);
-        self.component_access.extend(self.a.component_access());
-        self.component_access.extend(self.b.component_access());
+        self.component_access_set
+            .extend(self.a.component_access_set());
+        self.component_access_set
+            .extend(self.b.component_access_set());
     }
 
     fn update_archetype_component_access(&mut self, world: UnsafeWorldCell) {

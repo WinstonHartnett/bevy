@@ -561,6 +561,14 @@ pub struct FilteredAccessSet<T: SparseSetIndex> {
 }
 
 impl<T: SparseSetIndex> FilteredAccessSet<T> {
+    /// Creates an empty [`FilteredAccessSet`] collection.
+    pub const fn new() -> Self {
+        FilteredAccessSet {
+            combined_access: Access::new(),
+            filtered_accesses: Vec::new(),
+        }
+    }
+
     /// Returns a reference to the unfiltered access of the entire set.
     #[inline]
     pub fn combined_access(&self) -> &Access<T> {
@@ -640,11 +648,11 @@ impl<T: SparseSetIndex> FilteredAccessSet<T> {
     }
 
     /// Adds all of the accesses from the passed set to `self`.
-    pub fn extend(&mut self, filtered_access_set: FilteredAccessSet<T>) {
+    pub fn extend(&mut self, filtered_access_set: &FilteredAccessSet<T>) {
         self.combined_access
             .extend(&filtered_access_set.combined_access);
         self.filtered_accesses
-            .extend(filtered_access_set.filtered_accesses);
+            .extend(filtered_access_set.filtered_accesses.iter().cloned());
     }
 
     /// Marks the set as reading all possible indices of type T.

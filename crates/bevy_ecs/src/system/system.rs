@@ -3,6 +3,7 @@ use core::fmt::Debug;
 
 use crate::archetype::Archetype;
 use crate::component::Tick;
+use crate::query::FilteredAccessSet;
 use crate::schedule::InternedSystemSet;
 use crate::world::unsafe_world_cell::UnsafeWorldCell;
 use crate::world::DeferredWorld;
@@ -38,8 +39,8 @@ pub trait System: Send + Sync + 'static {
     fn type_id(&self) -> TypeId {
         TypeId::of::<Self>()
     }
-    /// Returns the system's component [`Access`].
-    fn component_access(&self) -> &Access<ComponentId>;
+    /// Returns the system's component [`FilteredAccessSet`].
+    fn component_access_set(&self) -> &FilteredAccessSet<ComponentId>;
     /// Returns the system's archetype component [`Access`].
     fn archetype_component_access(&self) -> &Access<ArchetypeComponentId>;
     /// Returns true if the system is [`Send`].

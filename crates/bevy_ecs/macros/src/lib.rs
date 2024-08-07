@@ -242,7 +242,7 @@ pub fn impl_param_set(_input: TokenStream) -> TokenStream {
                     #(
                         system_meta
                             .component_access_set
-                            .extend(#meta.component_access_set);
+                            .extend(&#meta.component_access_set);
                         system_meta
                             .archetype_component_access
                             .extend(&#meta.archetype_component_access);

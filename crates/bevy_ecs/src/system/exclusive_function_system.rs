@@ -79,8 +79,8 @@ where
     }
 
     #[inline]
-    fn component_access(&self) -> &Access<ComponentId> {
-        self.system_meta.component_access_set.combined_access()
+    fn component_access_set(&self) -> &crate::query::FilteredAccessSet<ComponentId> {
+        &self.system_meta.component_access_set
     }
 
     #[inline]
