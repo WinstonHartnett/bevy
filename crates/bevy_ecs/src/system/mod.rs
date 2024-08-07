@@ -126,6 +126,7 @@ pub use commands::*;
 pub use exclusive_function_system::*;
 pub use exclusive_system_param::*;
 pub use function_system::*;
+pub use inner_system::*;
 pub use observer_system::*;
 pub use query::*;
 pub use system::*;
