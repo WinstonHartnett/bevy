@@ -86,6 +86,11 @@ where
     }
 
     #[inline]
+    fn world_id(&self) -> Option<crate::world::WorldId> {
+        self.system.world_id()
+    }
+
+    #[inline]
     fn component_access_set(
         &self,
     ) -> &crate::query::FilteredAccessSet<crate::component::ComponentId> {

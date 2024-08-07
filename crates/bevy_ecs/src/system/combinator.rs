@@ -147,6 +147,10 @@ where
         self.name.clone()
     }
 
+    fn world_id(&self) -> Option<crate::world::WorldId> {
+        self.a.world_id()
+    }
+
     fn component_access_set(&self) -> &FilteredAccessSet<ComponentId> {
         &self.component_access_set
     }

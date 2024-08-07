@@ -509,6 +509,11 @@ where
     }
 
     #[inline]
+    fn world_id(&self) -> Option<WorldId> {
+        self.world_id
+    }
+
+    #[inline]
     fn component_access_set(&self) -> &FilteredAccessSet<ComponentId> {
         &self.system_meta.component_access_set
     }

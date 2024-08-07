@@ -6,7 +6,7 @@ use crate::component::Tick;
 use crate::query::FilteredAccessSet;
 use crate::schedule::InternedSystemSet;
 use crate::world::unsafe_world_cell::UnsafeWorldCell;
-use crate::world::DeferredWorld;
+use crate::world::{DeferredWorld, WorldId};
 use crate::{archetype::ArchetypeComponentId, component::ComponentId, query::Access, world::World};
 
 use std::any::TypeId;
@@ -38,6 +38,11 @@ pub trait System: Send + Sync + 'static {
     #[inline]
     fn type_id(&self) -> TypeId {
         TypeId::of::<Self>()
+    }
+    /// Returns the [`WorldId`] of the underlying system type.
+    #[inline]
+    fn world_id(&self) -> Option<WorldId> {
+        None
     }
     /// Returns the system's component [`FilteredAccessSet`].
     fn component_access_set(&self) -> &FilteredAccessSet<ComponentId>;

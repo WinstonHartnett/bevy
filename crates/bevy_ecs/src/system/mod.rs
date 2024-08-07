@@ -108,6 +108,7 @@ mod commands;
 mod exclusive_function_system;
 mod exclusive_system_param;
 mod function_system;
+mod inner_system;
 mod observer_system;
 mod query;
 #[allow(clippy::module_inception)]
