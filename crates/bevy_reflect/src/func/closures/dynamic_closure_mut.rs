@@ -3,7 +3,7 @@ use core::fmt::{Debug, Formatter};
 
 use crate::func::args::{ArgInfo, ArgList};
 use crate::func::info::FunctionInfo;
-use crate::func::{FunctionResult, IntoClosureMut, ReturnInfo};
+use crate::func::{DynamicClosure, DynamicFunction, FunctionResult, IntoClosureMut, ReturnInfo};
 
 /// A dynamic representation of a Rust closure.
 ///
@@ -42,7 +42,7 @@ use crate::func::{FunctionResult, IntoClosureMut, ReturnInfo};
 /// let value = func.call(args).unwrap().unwrap_owned();
 ///
 /// // Check the result:
-/// assert_eq!(value.take::<i32>().unwrap(), 2);
+/// assert_eq!(value.try_take::<i32>().unwrap(), 2);
 ///
 /// // Note that `func` still has a reference to `list`,
 /// // so we need to drop it before we can access `list` again.
@@ -51,9 +51,6 @@ use crate::func::{FunctionResult, IntoClosureMut, ReturnInfo};
 /// drop(func);
 /// assert_eq!(list, vec![1, -2, 3]);
 /// ```
-///
-/// [`DynamicClosure`]: crate::func::closures::DynamicClosure
-/// [`DynamicFunction`]: crate::func::DynamicFunction
 pub struct DynamicClosureMut<'env> {
     info: FunctionInfo,
     func: Box<dyn for<'a> FnMut(ArgList<'a>) -> FunctionResult<'a> + 'env>,
@@ -125,7 +122,7 @@ impl<'env> DynamicClosureMut<'env> {
     /// let mut func = add.into_closure_mut().with_name("add");
     /// let args = ArgList::new().push_owned(25_i32).push_owned(75_i32);
     /// let result = func.call(args).unwrap().unwrap_owned();
-    /// assert_eq!(result.take::<i32>().unwrap(), 100);
+    /// assert_eq!(result.try_take::<i32>().unwrap(), 100);
     /// ```
     ///
     /// [`call_once`]: DynamicClosureMut::call_once
@@ -199,6 +196,26 @@ impl<'env> Debug for DynamicClosureMut<'env> {
 
         let ret = self.info.return_info().type_path();
         write!(f, ") -> {ret})")
+    }
+}
+
+impl From<DynamicFunction> for DynamicClosureMut<'static> {
+    #[inline]
+    fn from(func: DynamicFunction) -> Self {
+        Self {
+            info: func.info,
+            func: Box::new(move |args| (func.func)(args)),
+        }
+    }
+}
+
+impl<'env> From<DynamicClosure<'env>> for DynamicClosureMut<'env> {
+    #[inline]
+    fn from(closure: DynamicClosure<'env>) -> Self {
+        Self {
+            info: closure.info,
+            func: Box::new(move |args| (closure.func)(args)),
+        }
     }
 }
 

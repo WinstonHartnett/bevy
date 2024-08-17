@@ -4,7 +4,10 @@ use std::sync::Arc;
 
 use crate::func::args::{ArgInfo, ArgList};
 use crate::func::info::FunctionInfo;
-use crate::func::{FunctionResult, IntoFunction, ReturnInfo};
+use crate::func::{
+    DynamicClosure, DynamicClosureMut, FunctionResult, IntoClosure, IntoClosureMut, IntoFunction,
+    ReturnInfo,
+};
 
 /// A dynamic representation of a Rust function.
 ///
@@ -41,7 +44,7 @@ use crate::func::{FunctionResult, IntoFunction, ReturnInfo};
 /// let value = func.call(args).unwrap().unwrap_owned();
 ///
 /// // Check the result:
-/// assert_eq!(value.downcast_ref::<i32>(), Some(&100));
+/// assert_eq!(value.try_downcast_ref::<i32>(), Some(&100));
 /// ```
 ///
 /// However, in some cases, these functions may need to be created manually:
@@ -82,17 +85,16 @@ use crate::func::{FunctionResult, IntoFunction, ReturnInfo};
 /// let value = func.call(args).unwrap().unwrap_mut();
 ///
 /// // Mutate the return value:
-/// value.downcast_mut::<String>().unwrap().push_str("!!!");
+/// value.try_downcast_mut::<String>().unwrap().push_str("!!!");
 ///
 /// // Check the result:
 /// assert_eq!(list, vec!["Hello, World!!!"]);
 /// ```
 ///
-/// [`DynamicClosure`]: crate::func::DynamicClosure
 /// [module-level documentation]: crate::func
 pub struct DynamicFunction {
-    info: FunctionInfo,
-    func: Arc<dyn for<'a> Fn(ArgList<'a>) -> FunctionResult<'a> + Send + Sync + 'static>,
+    pub(super) info: FunctionInfo,
+    pub(super) func: Arc<dyn for<'a> Fn(ArgList<'a>) -> FunctionResult<'a> + Send + Sync + 'static>,
 }
 
 impl DynamicFunction {
@@ -151,7 +153,7 @@ impl DynamicFunction {
     /// let func = add.into_function();
     /// let args = ArgList::new().push_owned(25_i32).push_owned(75_i32);
     /// let result = func.call(args).unwrap().unwrap_owned();
-    /// assert_eq!(result.take::<i32>().unwrap(), 100);
+    /// assert_eq!(result.try_take::<i32>().unwrap(), 100);
     /// ```
     pub fn call<'a>(&self, args: ArgList<'a>) -> FunctionResult<'a> {
         (self.func)(args)
@@ -221,6 +223,20 @@ impl IntoFunction<()> for DynamicFunction {
     }
 }
 
+impl IntoClosure<'_, ()> for DynamicFunction {
+    #[inline]
+    fn into_closure(self) -> DynamicClosure<'static> {
+        DynamicClosure::from(self)
+    }
+}
+
+impl IntoClosureMut<'_, ()> for DynamicFunction {
+    #[inline]
+    fn into_closure_mut(self) -> DynamicClosureMut<'static> {
+        DynamicClosureMut::from(self)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -269,7 +285,7 @@ mod tests {
             .call(ArgList::new().push_owned(0_usize).push_ref(&list))
             .unwrap()
             .unwrap_ref()
-            .downcast_ref::<String>()
+            .try_downcast_ref::<String>()
             .unwrap();
         assert_eq!(value, "foo");
     }
