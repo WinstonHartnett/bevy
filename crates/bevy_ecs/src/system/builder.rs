@@ -237,7 +237,7 @@ macro_rules! impl_param_set_builder_tuple {
                 $(
                     _system_meta
                         .component_access_set
-                        .extend($meta.component_access_set);
+                        .extend(&$meta.component_access_set);
                     _system_meta
                         .archetype_component_access
                         .extend(&$meta.archetype_component_access);

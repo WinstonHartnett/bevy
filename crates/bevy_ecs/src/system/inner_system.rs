@@ -1,6 +1,6 @@
 use crate::world::{unsafe_world_cell::UnsafeWorldCell, World};
 
-use super::{BoxedSystem, BuildableSystemParam, IntoSystem, System, SystemParam};
+use super::{BoxedSystem, SystemParam, SystemParamBuilder};
 
 pub struct InnerSystemState<In = (), Out = ()> {
     system: BoxedSystem<In, Out>,
@@ -19,11 +19,6 @@ where
     #[inline]
     pub fn run(&mut self, input: In) -> Out {
         unsafe { self.state.system.run_unsafe(input, self.world) }
-    }
-
-    #[inline]
-    pub fn inner_system(&mut self) -> &mut BoxedSystem<In, Out> {
-        &mut self.state.system
     }
 }
 
@@ -80,66 +75,32 @@ where
     }
 }
 
-pub struct InnerSystemBuilder<'b, In = (), Out = ()> {
-    world: &'b mut World,
-    system: Option<BoxedSystem<In, Out>>,
+pub struct InnerSystemBuilder<In = (), Out = ()> {
+    system: BoxedSystem<In, Out>,
 }
 
-impl<'b, In, Out> InnerSystemBuilder<'b, In, Out> {
-    #[inline]
-    pub fn new(world: &'b mut World) -> Self {
-        Self {
-            world,
-            system: None,
-        }
-    }
-
-    #[inline]
-    pub fn world(&mut self) -> &mut World {
-        self.world
-    }
-
-    #[inline]
-    pub fn with_system<Marker>(&mut self, system: impl IntoSystem<In, Out, Marker>)
-    where
-        Marker: 'static,
-    {
-        assert!(
-            self.system.is_none(),
-            "`InnerSystemBuilder` was initialized with a system twice"
-        );
-        let system = Box::new(IntoSystem::into_system(system));
-        assert_eq!(
-            Some(self.world.id()),
-            system.world_id(),
-            "TODO error" // TODO better error
-        );
-        self.system = Some(system);
+impl<In, Out> InnerSystemBuilder<In, Out> {
+    pub fn new(system: BoxedSystem<In, Out>) -> Self {
+        Self { system }
     }
 }
 
-impl<'w, 's, In, Out> BuildableSystemParam for InnerSystem<'w, 's, In, Out>
+unsafe impl<'w, 's, 'b, In, Out> SystemParamBuilder<InnerSystem<'w, 's, In, Out>>
+    for InnerSystemBuilder<In, Out>
 where
     In: 'static,
     Out: 'static,
 {
-    type Builder<'b> = InnerSystemBuilder<'b, In, Out>;
-
-    fn build(
-        world: &mut crate::prelude::World,
-        meta: &mut super::SystemMeta,
-        func: impl FnOnce(&mut Self::Builder<'_>),
-    ) -> Self::State {
-        let mut builder = InnerSystemBuilder::new(world);
-        func(&mut builder);
-        let Some(system) = builder.system.take() else {
-            panic!("`InnerSystemBuilder` was not given a system to initialize. Use `with_system`.")
-        };
-        assert!(
-            meta.component_access_set
-                .is_compatible(system.component_access_set()),
-            "TODO error here" // TODO
-        );
+    fn build(self, world: &mut World, meta: &mut super::SystemMeta) -> InnerSystemState<In, Out> {
+        let system = self.system;
+        assert_eq!(system.world_id().unwrap(), world.id());
+        let component_access = system.component_access_set();
+        let archetype_component_access = system.archetype_component_access();
+        assert!(component_access.is_compatible(&meta.component_access_set));
+        assert!(archetype_component_access.is_compatible(&archetype_component_access)); // TODO not sure if needed -> component access check should be enough!
+        meta.component_access_set.extend(component_access);
+        meta.archetype_component_access
+            .extend(archetype_component_access);
         InnerSystemState { system }
     }
 }
