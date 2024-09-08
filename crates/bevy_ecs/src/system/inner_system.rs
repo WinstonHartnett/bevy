@@ -1,6 +1,6 @@
 use crate::world::{unsafe_world_cell::UnsafeWorldCell, World};
 
-use super::{BoxedSystem, SystemParam, SystemParamBuilder};
+use super::{BoxedSystem, System, SystemParam, SystemParamBuilder};
 
 pub struct InnerSystemState<In = (), Out = ()> {
     system: BoxedSystem<In, Out>,
@@ -80,8 +80,10 @@ pub struct InnerSystemBuilder<In = (), Out = ()> {
 }
 
 impl<In, Out> InnerSystemBuilder<In, Out> {
-    pub fn new(system: BoxedSystem<In, Out>) -> Self {
-        Self { system }
+    pub fn new(system: impl System<In = In, Out = Out>) -> Self {
+        Self {
+            system: Box::new(system),
+        }
     }
 }
 
